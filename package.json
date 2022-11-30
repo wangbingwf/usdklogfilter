@@ -103,6 +103,11 @@
     "typescript": "^4.8.4",
     "@vscode/test-electron": "^2.2.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wangbingwf/usdklogfilter"
+},
+"homepage": "https://github.com/wangbingwf/usdklogfilter",
   "dependencies": {
     "eoml": "^1.0.2"
 }
