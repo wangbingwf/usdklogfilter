@@ -1,0 +1,109 @@
+{
+  "name": "usdklogfilter",
+  "displayName": "uSDKLogFilter",
+  "description": "",
+  "version": "0.0.1",
+  "publisher": "wangbing",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.uSDKLogFilterByInputString",
+    "onCommand:extension.uSDKLogFilterByInputRegex",
+    "onCommand:extension.uSDKLogFilterByNotContainInputString",
+    "onCommand:extension.uSDKLogFilterByNotMatchInputRegex",
+    "onCommand:extension.uSDKLogFilterByVersion",
+    "onCommand:extension.uSDKLogFilterByDevice",
+    "onCommand:extension.uSDKLogFilterByTrace"
+  ],
+
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+        {
+            "command": "extension.uSDKLogFilterByInputString",
+            "title": "uSDKLogFilter By Input String"
+        },
+        {
+            "command": "extension.uSDKLogFilterByInputRegex",
+            "title": "uSDKLogFilter By Input Regex"
+        },
+        {
+            "command": "extension.uSDKLogFilterByNotContainInputString",
+            "title": "uSDKLogFilter By Not Contain Input String"
+        },
+        {
+            "command": "extension.uSDKLogFilterByNotMatchInputRegex",
+            "title": "uSDKLogFilter By Not Match Input Regex"
+        },
+        {
+            "command": "extension.uSDKLogFilterByVersion",
+            "title": "uSDKLogFilter By Version"
+        },
+        {
+            "command": "extension.uSDKLogFilterByDevice",
+            "title": "uSDKLogFilter By Device"
+        },
+        {
+            "command": "extension.uSDKLogFilterByTrace",
+            "title": "uSDKLogFilter By Trace"
+        }
+    ],
+    "menus": {
+        "explorer/context": [
+            {
+                "when": "!explorerResourceIsFolder",
+                "command": "extension.uSDKLogFilterBy",
+                "group": "4_uSDKLogFilter@1"
+            }
+        ],
+        "editor/title/context": [
+            {
+                "when": "!explorerResourceIsFolder",
+                "command": "extension.uSDKLogFilterBy",
+                "group": "4_uSDKLogFilter@1"
+            }
+        ]
+    },
+    "configuration": {
+        "title": "uSDKLogFilter",
+        "properties": {
+            "uSDKLogFilter.historySize": {
+                "type": "integer",
+                "default": 10,
+                "minimum": 1,
+                "maximum": 50,
+                "scope": "application",
+                "description": "Filter patterns history size"
+            }
+        }
+    }
+},
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.73.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^8.26.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.8.4",
+    "@vscode/test-electron": "^2.2.0"
+  },
+  "dependencies": {
+    "eoml": "^1.0.2"
+}
+}
