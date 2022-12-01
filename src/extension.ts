@@ -95,6 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
         filter.filter(path);
         context.subscriptions.push(filter);
     });
+
     let disposableGeneral = vscode.commands.registerCommand('extension.uSDKLogFilterByTrace', (path) => {
 
         let picks: Array<string> = ['All', 
@@ -109,13 +110,13 @@ export function activate(context: vscode.ExtensionContext) {
             console.log('select:' + value );
 
             const index = picks.indexOf(value);
-            let regex = new RegExp('');
+            let regex: Array<RegExp> = [];
             if (index === 0) {
-                regex = new RegExp('uTraceImp.m');
+                regex.push(new RegExp('uTraceImp.m'));
             } else if (index === 1) {
-                regex = new RegExp('uTraceImp.m.*bId = bind');
+                regex.push(new RegExp('uTraceImp.m.*bId = bind'));
             } else if (index === 2) {
-                regex = new RegExp('uTraceImp.m.*bId = opack');
+                regex.push(new RegExp('uTraceImp.m.*bId = opack'));
             } else {
 
             }
@@ -135,6 +136,52 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposableVersion);
     context.subscriptions.push(disposableDevice);
     context.subscriptions.push(disposableGeneral);
+
+    registerCommandSoftAp(context);
+
+}
+
+function registerCommandSoftAp(context: vscode.ExtensionContext) {
+
+    let disposable = vscode.commands.registerCommand('extension.uSDKLogFilterBySoftAp', (path) => {
+
+        let pickLabels = ['uSDKBinding',
+                        'uSDKSoftApBinding',
+                        'uSDKSoftApConfig',
+                        'uSDKNetworkReachabilityManager',
+                        'cloud_get_device_bind_result',
+                        'uSDKHttpsHALInterface',
+                        'UWS-getBindResult'];
+
+        let regexArray = [new RegExp('uSDKBinding'),
+                        new RegExp('uSDKSoftApBinding'),
+                        new RegExp('uSDKSoftApConfig'),
+                        new RegExp('uSDKNetworkReachabilityManager'),
+                        new RegExp('cloud_get_device_bind_result'),
+                        new RegExp('uSDKHttpsHALInterface'),
+                        new RegExp('(getNewUWSRequestWithDetailURL|sendHttpRequest2).*dcs/device-service-2c/get/device/binding/status')];
+
+
+        vscode.window.showQuickPick(pickLabels, {canPickMany: true}).then(values => {
+            if (values === undefined || values.length === 0) {
+                console.log('No selected');
+                return;
+            }
+
+            let selectedRegexs: Array<RegExp> = values.map(item => {
+                const index = pickLabels.indexOf(item);
+                return regexArray[index];
+            });
+
+            let filter = new FilterGeneral(context, selectedRegexs);
+            filter.filter(path);
+            context.subscriptions.push(filter);
+        });
+
+    });
+
+    context.subscriptions.push(disposable);
+
 }
 
 // this method is called when your extension is deactivated

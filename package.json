@@ -2,7 +2,7 @@
   "name": "usdklogfilter",
   "displayName": "uSDKLogFilter",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "wangbing",
   "engines": {
     "vscode": "^1.73.0"
@@ -17,7 +17,8 @@
     "onCommand:extension.uSDKLogFilterByNotMatchInputRegex",
     "onCommand:extension.uSDKLogFilterByVersion",
     "onCommand:extension.uSDKLogFilterByDevice",
-    "onCommand:extension.uSDKLogFilterByTrace"
+    "onCommand:extension.uSDKLogFilterByTrace",
+    "onCommand:extension.uSDKLogFilterBySoftAp"
   ],
 
   "main": "./out/extension.js",
@@ -50,24 +51,12 @@
         {
             "command": "extension.uSDKLogFilterByTrace",
             "title": "uSDKLogFilter By Trace"
+        },
+        {
+            "command": "extension.uSDKLogFilterBySoftAp",
+            "title": "uSDKLogFilter By SoftAp"
         }
     ],
-    "menus": {
-        "explorer/context": [
-            {
-                "when": "!explorerResourceIsFolder",
-                "command": "extension.uSDKLogFilterBy",
-                "group": "4_uSDKLogFilter@1"
-            }
-        ],
-        "editor/title/context": [
-            {
-                "when": "!explorerResourceIsFolder",
-                "command": "extension.uSDKLogFilterBy",
-                "group": "4_uSDKLogFilter@1"
-            }
-        ]
-    },
     "configuration": {
         "title": "uSDKLogFilter",
         "properties": {
@@ -107,7 +96,7 @@
     "type": "git",
     "url": "https://github.com/wangbingwf/usdklogfilter"
 },
-"homepage": "https://github.com/wangbingwf/usdklogfilter",
+  "homepage": "https://github.com/wangbingwf/usdklogfilter",
   "dependencies": {
     "eoml": "^1.0.2"
 }

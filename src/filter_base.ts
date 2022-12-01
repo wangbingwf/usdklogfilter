@@ -219,7 +219,7 @@ class FilterLineBase{
                 // console.log('line ', line);
                 let fixedline = this.matchLine(line);
                 if(fixedline !== undefined){
-                    writeStream.write(fixedline + '\n');
+                    writeStream.write(fixedline + '\n\n');
                 }
             }).on('close',()=>{
                 this.showInfo('Filter completed :)');

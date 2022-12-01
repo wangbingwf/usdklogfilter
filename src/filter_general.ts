@@ -11,14 +11,12 @@ import {FilterLineBase} from './filter_base';
  */
 
 class FilterGeneral extends FilterLineBase{
-    public regex: RegExp;
-    public notmatch: boolean;
+    public regex: Array<RegExp>;
 
-    constructor(context: vscode.ExtensionContext, regex: RegExp, notmatch: boolean = false) {
+    constructor(context: vscode.ExtensionContext, regex: RegExp[]) {
         super(context);
 
         this.regex = regex;
-        this.notmatch = notmatch;
     }
 
     protected async prepare(callback : (succeed: boolean)=>void){
@@ -28,15 +26,12 @@ class FilterGeneral extends FilterLineBase{
 
     protected matchLine(line: string): string | undefined{
 
-        if(this.notmatch){
-            if(line.match(this.regex) === null){
-                return line;
-            }
-        }else{
-            if(line.match(this.regex) !== null){
-                return line;
+        for (const reg of this.regex) {
+            if (line.match(reg) !== null) {
+               return line;
             }
         }
+
         return undefined;
     }
 
