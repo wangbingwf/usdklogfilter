@@ -23,7 +23,7 @@ uSDK日志过滤, 基于vscode-extension-filter-line插件进行改造
 1. 包含`uSDKBinding, uSDKSoftApBinding, uSDKSoftApConfig, uSDKNetworkReachabilityManager, cloud_get_device_bind_result, uSDKHttpsHALInterface, getBindResult`
 2. 暂未包含用户侧绑定、在线绑等日志，待具体需求后补充
 
-![softAp](img/softap.gif)
+![softap](img/softap.gif)
 
 ### uSDKLogFilter By Video
 
