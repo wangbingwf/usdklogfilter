@@ -2,7 +2,7 @@
   "name": "usdklogfilter",
   "displayName": "uSDKLogFilter",
   "description": "",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "wangbing",
   "engines": {
     "vscode": "^1.73.0"
@@ -18,7 +18,9 @@
     "onCommand:extension.uSDKLogFilterByVersion",
     "onCommand:extension.uSDKLogFilterByDevice",
     "onCommand:extension.uSDKLogFilterByTrace",
-    "onCommand:extension.uSDKLogFilterBySoftAp"
+    "onCommand:extension.uSDKLogFilterBySoftAp",
+    "onCommand:extension.uSDKLogFilterByVideo",
+    "onCommand:extension.uSDKLogFilterByBLE"
   ],
 
   "main": "./out/extension.js",
@@ -55,6 +57,14 @@
         {
             "command": "extension.uSDKLogFilterBySoftAp",
             "title": "uSDKLogFilter By SoftAp"
+        },
+        {
+            "command": "extension.uSDKLogFilterByVideo",
+            "title": "uSDKLogFilter By Video"
+        },
+        {
+            "command": "extension.uSDKLogFilterByBLE",
+            "title": "uSDKLogFilter By BLE"
         }
     ],
     "configuration": {

@@ -138,6 +138,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposableGeneral);
 
     registerCommandSoftAp(context);
+    registerCommandVideo(context);
+    registerCommandBLE(context);
 
 }
 
@@ -149,17 +151,17 @@ function registerCommandSoftAp(context: vscode.ExtensionContext) {
                         'uSDKSoftApBinding',
                         'uSDKSoftApConfig',
                         'uSDKNetworkReachabilityManager',
-                        'cloud_get_device_bind_result',
-                        'uSDKHttpsHALInterface',
-                        'UWS-getBindResult'];
+                        // 'cloud_get_device_bind_result',
+                        // 'uSDKHttpsHALInterface',
+                        'getBindResult'];
 
         let regexArray = [new RegExp('uSDKBinding'),
                         new RegExp('uSDKSoftApBinding'),
                         new RegExp('uSDKSoftApConfig'),
                         new RegExp('uSDKNetworkReachabilityManager'),
-                        new RegExp('cloud_get_device_bind_result'),
-                        new RegExp('uSDKHttpsHALInterface'),
-                        new RegExp('(getNewUWSRequestWithDetailURL|sendHttpRequest2).*dcs/device-service-2c/get/device/binding/status')];
+                        // new RegExp('cloud_get_device_bind_result'),
+                        // new RegExp('uSDKHttpsHALInterface'),
+                        new RegExp('((getNewUWSRequestWithDetailURL|sendHttpRequest2).*dcs/device-service-2c/get/device/binding/status)|uSDKHttpsHALInterface|((uSDKCommandPackage|uSDKCommunication).*cloud_get_device_bind_result)')];
 
 
         vscode.window.showQuickPick(pickLabels, {canPickMany: true}).then(values => {
@@ -183,6 +185,96 @@ function registerCommandSoftAp(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
 }
+
+function registerCommandVideo(context: vscode.ExtensionContext) {
+
+    let disposable = vscode.commands.registerCommand('extension.uSDKLogFilterByVideo', (path) => {
+
+        let pickLabels = ['uSDKVideo',
+                        'uSDKPlaybackPlayer',
+                        'uSDKMonitorPlayer',
+                        'uSDKCloudManager',
+                        'uSDKVideoManager',
+                        'uSDKPlayer+uSDKPrivatePlayer'];
+
+        let regexArray = [new RegExp('uSDKVideo'),
+                        new RegExp('uSDKPlaybackPlayer'),
+                        new RegExp('uSDKMonitorPlayer'),
+                        new RegExp('uSDKCloudManager'),
+                        new RegExp('uSDKVideoManager'),
+                        new RegExp('uSDKPlayer\\+uSDKPrivatePlayer')];
+
+
+        vscode.window.showQuickPick(pickLabels, {canPickMany: true}).then(values => {
+            if (values === undefined || values.length === 0) {
+                console.log('No selected');
+                return;
+            }
+
+            let selectedRegexs: Array<RegExp> = values.map(item => {
+                const index = pickLabels.indexOf(item);
+                return regexArray[index];
+            });
+
+            let filter = new FilterGeneral(context, selectedRegexs);
+            filter.filter(path);
+            context.subscriptions.push(filter);
+        });
+
+    });
+
+    context.subscriptions.push(disposable);
+
+}
+
+/**
+ * WiFi&BLE绑定分析
+ * 1. 最好能有设备前后广播内容变化及解析【todo】
+ * 2. 先实现V5
+ * 3. 要包含mqtt，BLE HAL，json
+ * 
+ */
+function registerCommandBLE(context: vscode.ExtensionContext) {
+
+    let disposable = vscode.commands.registerCommand('extension.uSDKLogFilterByBLE', (path) => {
+
+        let pickLabels = ['uSDKBinding',
+                        'uSDKBLEBinding',
+                        'uSDKWiFiBLEBinding',
+                        'uSDKNetworkReachabilityManager',
+                        //'uSDKBLEHALInterface',
+                        'getBindResult'];
+
+        let regexArray = [new RegExp('uSDKBinding'),
+                        new RegExp('uSDKBLEBinding'),
+                        new RegExp('uSDKWiFiBLEBinding|((uSDKCommandPackage|uSDKCommunication).*(config_device_by_ble|module_config_state_notify|ucom_config_state_notify))'),
+                        new RegExp('uSDKNetworkReachabilityManager'),
+                        //new RegExp('uSDKHttpsHALInterface'),
+                        new RegExp('((getNewUWSRequestWithDetailURL|sendHttpRequest2).*dcs/device-service-2c/get/device/binding/status)|((proxy up.*queryDevBindStatus)|(come topic.*queryDevBindStatus))|((uSDKCommandPackage|uSDKCommunication).*cloud_get_device_bind_result)')];
+
+
+        vscode.window.showQuickPick(pickLabels, {canPickMany: true}).then(values => {
+            if (values === undefined || values.length === 0) {
+                console.log('No selected');
+                return;
+            }
+
+            let selectedRegexs: Array<RegExp> = values.map(item => {
+                const index = pickLabels.indexOf(item);
+                return regexArray[index];
+            });
+
+            let filter = new FilterGeneral(context, selectedRegexs);
+            filter.filter(path);
+            context.subscriptions.push(filter);
+        });
+
+    });
+
+    context.subscriptions.push(disposable);
+
+}
+
 
 // this method is called when your extension is deactivated
 export function deactivate() {
